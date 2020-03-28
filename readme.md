@@ -30,3 +30,9 @@ Selenium + Pyecharts
 - output: 可视化HTML文件生成路径
 
 数据最终将存储到data_root + data_path下
+
+## 可视化效果
+
+- Echarts支持滚轮放大缩小，以及鼠标拖拽
+- 节点数量过多时需要迭代一定的时间才能形成稳定的社交网络图
+![效果](https://github.com/Liadrinz/qq-relation/blob/master/demo.png)
