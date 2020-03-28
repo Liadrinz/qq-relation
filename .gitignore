@@ -1,0 +1,8 @@
+myenv/*
+data/*
+.vscode/*
+__pychache__/*
+geckodriver.log
+index.html
+dist/*
+build/*
