@@ -34,5 +34,6 @@ Selenium + Pyecharts
 ## 可视化效果
 
 - Echarts支持滚轮放大缩小，以及鼠标拖拽
+- 鼠标指在节点上可以查看详细信息和相关节点
 - 节点数量过多时需要迭代一定的时间才能形成稳定的社交网络图
 ![效果](https://github.com/Liadrinz/qq-relation/blob/master/demo.png)
