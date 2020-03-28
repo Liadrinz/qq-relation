@@ -3,4 +3,7 @@ from config import config, update
 
 config['me'] = input('请输入QQ: ')
 update(config)
-os.system('.\start.bat')
+if len(os.sys.argv) and os.sys.argv[1] == 'sh':
+    os.system('.\start.sh')
+else:
+    os.system('.\start.bat')

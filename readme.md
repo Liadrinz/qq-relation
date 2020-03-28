@@ -8,8 +8,9 @@ Selenium + Pyecharts
 
 ### 方法一
 
-1. 安装Firefox浏览器
-1. 运行`python start.py`，输入QQ
+1. 安装Firefox浏览器和python3
+1. 运行`pip install -r requirements.txt`
+1. 运行`python start.py` (linux为`python start.py sh`)，输入QQ
 1. 浏览器被自动启动，请在浏览器中登录到QQ空间
 1. 爬虫开始，最小化即可
 1. 爬虫结束后将在项目根目录生成可视化结果，并自动打开
@@ -17,7 +18,8 @@ Selenium + Pyecharts
 
 ### 方法二
 
-直接运行start.exe
+1. 安装Firefox浏览器
+1. 运行start.exe
 
 ## 配置
 
