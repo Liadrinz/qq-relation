@@ -1,7 +1,8 @@
 myenv/*
 data/*
 .vscode/*
-__pychache__/*
+__pycache__/*
+*.pyc
 geckodriver.log
 index.html
 dist/*
