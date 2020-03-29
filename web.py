@@ -12,12 +12,8 @@ app = Flask(__name__)
 V, E = build_graph()
 indices = make_index(V, E)
 
-@app.route('/')
-def index():
-    return render_template("main.html")
-
-@app.route('/graph')
-def graph():
+@app.route('/api')
+def api():
     global V, E, indices
     qqs = request.args.get('qqs', None)
     nV, nE = V, E
@@ -25,7 +21,11 @@ def graph():
         qqs = [str(q) for q in json.loads(qqs)]
         nV, nE = filter_graph(V, E, indices, qqs=qqs)
     nodes, links = get_nls(nV, nE, main=qqs)
-    return render_template("graph.html", data={'V': nodes, 'E': links})
+    return json.dumps({'V': nodes, 'E': links})
+
+@app.route('/')
+def graph():
+    return render_template("graph.html", data={'port': server_port})
 
 def open_browser():
     url = 'http://localhost:' + server_port
