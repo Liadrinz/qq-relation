@@ -27,7 +27,7 @@ class User:
             self.cate = value.cate
     
     def get_name(self):
-        return '{0}({1})'.format(self.nick, self.uuid)
+        return '{0}-{1}'.format(self.nick, self.uuid)
 
     def __hash__(self):
         return hash(self.uuid)
@@ -36,7 +36,7 @@ class User:
         return self.uuid == value.uuid
 
     def json(self):
-        return {'name': self.get_name(), 'category': 'me' if self.uuid == signature(me) else self.cate}
+        return {'name': self.get_name().encode('utf-8'), 'category': 'me' if self.uuid == signature(me) else self.cate}
     
     def __str__(self):
         return json.dumps(self.json(), ensure_ascii=False)
@@ -65,7 +65,7 @@ class Edge:
         return mi1 == mi2 and ma1 == ma2
     
     def json(self):
-        return {'source': '{0}({1})'.format(self.src.nick, self.src.uuid), 'target': '{0}({1})'.format(self.tar.nick, self.tar.uuid)}
+        return {'source': '{0}-{1}'.format(self.src.nick, self.src.uuid), 'target': '{0}-{1}'.format(self.tar.nick, self.tar.uuid)}
     
     def __str__(self):
         return json.dumps(self.json(), ensure_ascii=False)
