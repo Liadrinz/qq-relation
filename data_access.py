@@ -1,7 +1,7 @@
 import json
 from bs4 import BeautifulSoup
 
-from config import data_path, data_root
+from config import data_path, data_root, me
 
 class Driver:
 
@@ -30,10 +30,14 @@ class Driver:
             res = []
             div = soup.find('div', {'class': 'user-list'})
             links = div.findAll('a')
+            i = 0
             for link in links:
                 nick = link.text
                 uuid = link['href'].split('/')[-1]
+                if i == 0 and uuid == me and nick[-1] == '、':
+                    nick = nick[:-1]
                 res.append({'uuid': uuid, 'nick': nick})
+                i += 1
             return res
         except AttributeError:
             raise Exception("Invalid Blog")
