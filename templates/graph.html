@@ -24,6 +24,8 @@
             <input type="text" id="qq-input" />
             <button id="search">搜索</button>
         </label>
+        <h4>历史记录</h4>
+        <ol id="records"></ol>
     </div>
     <script>
         // var result = '{{data|tojson}}';
@@ -80,7 +82,7 @@
                             "rotateLabel": false
                         },
                         "force": {
-                            "repulsion": 500,
+                            "repulsion": 5000,
                             "edgeLength": 50,
                             "gravity": 0.2
                         },
@@ -161,7 +163,7 @@
                 "tooltip": {
                     "show": true,
                     "trigger": "item",
-                    "triggerOn": "mousemove|click",
+                    "triggerOn": "click",
                     "axisPointer": {
                         "type": "line"
                     },
@@ -183,23 +185,74 @@
     </script>
 </body>
 <script>
+    var current = localStorage.getItem('current');
     var port = eval('{{data["port"]}}');
     var qq_input = document.getElementById('qq-input');
     var search = document.getElementById('search');
-    search.onclick = () => {
-        var suffix;
-        if (qq_input.value.replace(/\s/g, '').length == 0) suffix = '';
-        else suffix = '?qqs=[' + qq_input.value + ']';
+    function updateRecords() {
+        $('#records').remove()
+        var records = JSON.parse(localStorage.getItem('records'));
+        var rcdDom = document.createElement('ol');
+        rcdDom.setAttribute('id', 'records');
+        for (let record of records) {
+            var box = document.createElement('li');
+            var link = document.createElement('a');
+            link.innerHTML = record.split('=')[1];
+            link.href = 'javascript:void(0)';
+            link.onclick = () => {
+                req(record);
+            }
+            box.appendChild(link);
+            rcdDom.appendChild(box);
+        }
+        $('#ui').append(rcdDom);
+    }
+    function req(suffix) {
+        localStorage.setItem('current', suffix);
+        qq_input.value = '';
+        try {
+            JSON.parse(suffix.split('=')[1]).map((i) => {
+                qq_input.value += i + ',';
+            })
+        } catch (e) {
+            qq_input.value = '';
+        }
+        qq_input.value = qq_input.value.slice(0, -1);
         $.ajax({
             url: `http://localhost:${port}/api` + suffix,
             method: 'GET',
             success: (res) => {
                 var result = JSON.parse(res);
                 buildGraph(result.V, result.E);
+                if (suffix !== '') {
+                    var records;
+                    if (localStorage.getItem('records'))
+                        records = JSON.parse(localStorage.getItem('records'));
+                    else records = [];
+                    records.push(suffix);
+                    records = [...new Set(records)]
+                    localStorage.setItem('records', JSON.stringify(records));
+                    updateRecords();
+                }
             }
         })
     }
-    search.onclick();
+    search.onclick = () => {
+        var suffix;
+        if (qq_input.value.replace(/\s/g, '').length == 0) suffix = '';
+        else {
+            var qqs = qq_input.value.split(',');
+            for (let i = 0; i < qqs.length; ++i) {
+                if (qqs[i] == "") qqs.splice(i--, 1);
+            }
+            suffix = '?qqs=[' + qqs + ']';
+        }
+        req(suffix);
+    }
+    if (current)
+        req(current)
+    else req('');
+    updateRecords();
 </script>
 
 </html>

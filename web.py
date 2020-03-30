@@ -18,7 +18,11 @@ def api():
     qqs = request.args.get('qqs', None)
     nV, nE = V, E
     if qqs is not None:
-        qqs = [str(q) for q in json.loads(qqs)]
+        try:
+            qqs = [str(q) for q in json.loads(qqs)]
+        except json.JSONDecodeError:
+            qqs = None
+    if qqs is not None:
         nV, nE = filter_graph(V, E, indices, qqs=qqs)
     nodes, links = get_nls(nV, nE, main=qqs)
     return json.dumps({'V': nodes, 'E': links})
